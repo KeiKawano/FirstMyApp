@@ -1,28 +1,32 @@
 //
-//  ViewController.swift
+//  PercentViewController.swift
 //  FirstMyApp
 //
-//  Created by Kei on 2017/03/10.
+//  Created by Kei on 2017/03/12.
 //  Copyright © 2017年 Kei. All rights reserved.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
+class PercentViewController: UIViewController {
+    
+    // 金額を受け取るプロパテイ
+    var price = 0
+    // 割引パーセンテージ入力フィールド
+    @IBOutlet weak var persentField: UITextField!
 
-
-    @IBOutlet weak var priceField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
+
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     @IBAction func tap1Button(_ sender: Any) {
         addValue(buttonValue: "1")
     }
@@ -53,36 +57,34 @@ class ViewController: UIViewController {
     @IBAction func tap0Button(_ sender: Any) {
         addValue(buttonValue: "0")
     }
-    @IBAction func tap00Button(_ sender: Any) {
-        addValue(buttonValue: "00")
-    }
     @IBAction func tapClearButton(_ sender: Any) {
-        priceField.text = "0"
+        persentField.text = "0"
     }
     
     func addValue(buttonValue v: String) -> Void {
-        let value = priceField.text! + v
-        if let price = Int(value){
-            priceField.text = "\(price)"
-        }
-        
-    }
-    
-    // 画面遷移時の処理
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-        // 次の画面を呼び出す
-        let viewController = segue.destination as! PercentViewController
-        // 金額フィールドの文字列を数値に変換する
-        if let price = Int(priceField.text!) {
-            // 数値に変換した金額を次の画面に設定する
-            viewController.price = price
+        let value = persentField.text! + v
+        if let percent = Int(value){
+            persentField.text = "\(percent)"
         }
     }
     
-    //最後の画面から戻ってきたときの処理
-    @IBAction func restart(_ segue: UIStoryboardSegue) {
-        priceField.text = "0"
+    // 「計算する」ボタンがタップされて、次の画面に遷移するときの前処理
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let viewController = segue.destination as! ResultViewController
+        viewController.price = price
+        if let persent = Int(persentField.text!){
+            viewController.persent = persent
+        }
     }
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
 
 }
-
